@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hypercast Viewer</title>
+    <script type="module" src="/bundle.js"></script>
+  </head>
+  <body>
+    <main>
+      <section class="hero">
+        <h1>Hypercast Live Cast Feed</h1>
+        <p>Connected to SpacetimeDB + Hypersnap events.</p>
+      </section>
+
+      <div class="grid">
+        <article class="card">
+          <div class="label">Connection</div>
+          <p id="status">initializing...</p>
+        </article>
+        <article class="card">
+          <div class="label">Sync Cursor</div>
+          <p id="lastSync">unknown</p>
+        </article>
+        <article class="card">
+          <div class="label">Cached Casts</div>
+          <p id="count">0</p>
+        </article>
+      </div>
+
+      <div class="actions">
+        <button id="refresh" type="button">Refresh feed</button>
+      </div>
+
+      <section id="feed" aria-live="polite"></section>
+    </main>
+  </body>
+</html>

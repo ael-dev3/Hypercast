@@ -1,0 +1,17 @@
+{
+  "name": "hypercast-spacetime",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "SpacetimeDB module for Hypercast",
+  "scripts": {
+    "build": "spacetime build",
+    "publish": "spacetime publish"
+  },
+  "dependencies": {
+    "spacetimedb": "^2.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}

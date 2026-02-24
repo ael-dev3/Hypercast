@@ -5,13 +5,19 @@ interface FetchHypersnapConfig {
   baseUrl: string;
   pageSize: number;
   timeoutMs: number;
+  reverse?: boolean;
 }
 
 export async function fetchHypersnapPage(
   config: FetchHypersnapConfig,
   cursor: PollCursor
 ): Promise<ParsedEventsPage> {
-  const url = buildHypersnapEventsUrl(config.baseUrl, cursor, config.pageSize);
+  const url = buildHypersnapEventsUrl(
+    config.baseUrl,
+    cursor,
+    config.pageSize,
+    config.reverse ?? false
+  );
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), config.timeoutMs);
@@ -58,6 +64,13 @@ export async function fetchAllHypersnapPages(
       aggregate.hasMore = false;
       aggregate.cursor = cursor;
       aggregate.pageToken = cursor.pageToken;
+      break;
+    }
+
+    if (!pageResult.pageToken && pageResult.events.length === 0) {
+      aggregate.hasMore = false;
+      aggregate.cursor = pageResult.cursor;
+      aggregate.pageToken = pageResult.pageToken;
       break;
     }
 

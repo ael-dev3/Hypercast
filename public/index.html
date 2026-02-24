@@ -3,49 +3,138 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hypercast Viewer</title>
+    <title>Hypercast</title>
     <link rel="icon" href="/Hypercast.png" type="image/png" />
     <script type="module" src="/bundle.js"></script>
   </head>
   <body>
-    <main>
-      <section class="hero">
+    <main class="shell">
+      <header class="topbar">
         <div class="hero-brand">
           <img
             src="/Hypercast.png"
             alt="Hypercast logo"
             class="brand-logo"
-            width="56"
-            height="56"
+            width="46"
+            height="46"
             loading="eager"
           />
           <div>
-            <h1>Hypercast Live Cast Feed</h1>
-            <p>Connected to SpacetimeDB + Hypersnap events.</p>
+            <h1>Hypercast</h1>
+            <p>Direct Hypersnap feed with SpacetimeDB fallback and 30s visibility cadence</p>
           </div>
         </div>
+        <div class="status-chip" id="mode-chip">mode: booting</div>
+      </header>
+
+      <section class="source-card">
+        <div class="source-card__head">
+          <h2>Transport Settings</h2>
+          <div class="field">
+            <label for="modeSelect">Data mode</label>
+            <select id="modeSelect">
+              <option value="hypersnap">Hypersnap</option>
+              <option value="spacetime">SpacetimeDB</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="source-grid">
+          <label class="field">
+            <span>Hypersnap endpoint</span>
+            <input
+              id="hypersnapEndpoint"
+              type="url"
+              placeholder="http://127.0.0.1:3381"
+              spellcheck="false"
+              aria-label="Hypersnap endpoint"
+            />
+          </label>
+
+          <label class="field">
+            <span>Rows to render</span>
+            <input id="uiLimit" type="number" min="5" max="500" step="1" />
+          </label>
+
+          <label class="field">
+            <span>Poll interval (ms)</span>
+            <input id="hypersnapPollIntervalMs" type="number" min="1000" max="120000" step="1000" />
+          </label>
+
+          <label class="field">
+            <span>Page size</span>
+            <input id="hypersnapPageSize" type="number" min="10" max="500" step="1" />
+          </label>
+
+          <label class="field">
+            <span>Max pages / poll</span>
+            <input id="hypersnapMaxPages" type="number" min="1" max="50" step="1" />
+          </label>
+
+          <label class="field">
+            <span>Request timeout (ms)</span>
+            <input id="hypersnapTimeoutMs" type="number" min="1000" max="120000" step="1000" />
+          </label>
+
+          <label class="field">
+            <span>Sorting</span>
+            <label class="inline-checkbox">
+              <input id="hypersnapReverse" type="checkbox" />
+              <span>latest first</span>
+            </label>
+          </label>
+
+          <label class="field">
+            <span>Host policy</span>
+            <label class="inline-checkbox">
+              <input id="allowUntrustedHost" type="checkbox" />
+              <span>allow untrusted host</span>
+            </label>
+          </label>
+        </div>
+
+        <div class="quick-actions">
+          <button id="saveEndpoint" type="button">Save Settings</button>
+          <button id="refresh" type="button">Refresh now</button>
+          <button id="retry-spacetime" type="button">Retry SpacetimeDB</button>
+        </div>
+
+        <p class="muted" id="trustWarning"></p>
+        <p class="muted" id="transportMeta"></p>
       </section>
 
-      <div class="grid">
+      <section class="grid">
         <article class="card">
-          <div class="label">Connection</div>
+          <div class="label">Data Source</div>
           <p id="status">initializing...</p>
+          <p class="muted" id="statusDetail">...</p>
         </article>
         <article class="card">
           <div class="label">Sync Cursor</div>
-          <p id="lastSync">unknown</p>
+          <p id="lastCursor">unknown</p>
         </article>
         <article class="card">
-          <div class="label">Cached Casts</div>
+          <div class="label">Visible casts</div>
           <p id="count">0</p>
         </article>
-      </div>
+        <article class="card">
+          <div class="label">Last Sync</div>
+          <p id="lastSyncTime">never</p>
+        </article>
+        <article class="card">
+          <div class="label">Transport latency</div>
+          <p id="feedLatency">n/a</p>
+        </article>
+      </section>
 
-      <div class="actions">
-        <button id="refresh" type="button">Refresh feed</button>
-      </div>
+      <section class="card help">
+        <div class="label">Connection Health</div>
+        <p id="health">initializing</p>
+      </section>
 
-      <section id="feed" aria-live="polite"></section>
+      <section id="feed" aria-live="polite">
+        <div class="empty">Loading latest casts...</div>
+      </section>
     </main>
   </body>
 </html>

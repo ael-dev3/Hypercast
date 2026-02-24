@@ -279,12 +279,16 @@ export function parseEventsResponse(rawJson: string): ParsedEventsPage {
 export function buildHypersnapEventsUrl(
   baseUrl: string,
   cursor: PollCursor,
-  pageSize: number
+  pageSize: number,
+  reverse = false
 ): string {
   const normalized = new URL(baseUrl);
   normalized.pathname = '/v1/events';
   const params = normalized.searchParams;
   params.set('pageSize', String(Math.max(1, pageSize)));
+  if (reverse) {
+    params.set('reverse', 'true');
+  }
 
   if (cursor.pageToken) {
     params.set('pageToken', cursor.pageToken);

@@ -24,6 +24,14 @@ describe('buildHypersnapEventsUrl', () => {
 
     expect(withToken).toContain('pageToken=abc');
     expect(withToken).not.toContain('from_event_id');
+
+    const reverse = buildHypersnapEventsUrl('http://127.0.0.1:3381', {
+      fromEventId: 123n,
+      pageToken: null,
+    }, 50, true);
+
+    expect(reverse).toContain('reverse=true');
+    expect(base.includes('reverse')).toBe(false);
   });
 });
 

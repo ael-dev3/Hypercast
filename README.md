@@ -1,6 +1,6 @@
 # Hypercast
 
-A Firebase-hosted TypeScript prototype that ingests Hypersnap cast events, stores normalized cast state in SpacetimeDB, and renders a live cast feed.
+A Firebase-hosted TypeScript prototype that renders cast history from Hypersnap in a modern, dark UI and can switch to SpacetimeDB for persisted reads.
 
 ## Architecture
 
@@ -18,9 +18,14 @@ A Firebase-hosted TypeScript prototype that ingests Hypersnap cast events, store
      - `updateCursor`
 
 3. **Web client (`src/main.ts` + `public/index.html`)**
-   - Connects directly to SpacetimeDB.
-   - Subscribes to live cast rows and renders newest-first feed.
-   - Shows sync health and supports manual refresh.
+   - Primary path: direct Hypersnap polling with dedupe + newest-first rendering.
+   - Optional path: SpacetimeDB live subscription mode for persisted cache reads.
+   - Explicit transport controls:
+     - endpoint, poll interval, page size, max pages
+     - rows-to-render limit
+     - untrusted host override
+     - mode switch with auto-fallback from SpacetimeDB to Hypersnap
+   - Health indicators and last-sync latency to support weak-agent clarity.
 
 ## Safety and Reliability
 
@@ -73,6 +78,17 @@ For local smoke tests:
 npm run check
 HYPERSNAP_ALLOW_UNTRUSTED=true npm run poller:once -- --max-pages=1 --timeout-ms=3000
 ```
+
+## Browser controls
+
+- `mode` selector defaults to `hypersnap` but supports `spacetime`.
+- `save settings` persists transport values to localStorage:
+  - `hypersnap` URL, page size, poll interval, timeout
+  - max pages per refresh, reverse sort flag
+  - row limit and host trust override
+
+The app blocks non-whitelisted Hypersnap hosts by default and requires explicit
+`allowUntrustedHost` to run unsafe endpoints.
 
 ## Notes
 

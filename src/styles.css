@@ -41,6 +41,22 @@ main {
   margin-bottom: 14px;
 }
 
+.hero-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  border: 1px solid rgba(39, 228, 143, 0.5);
+  box-shadow: 0 0 16px rgba(39, 228, 143, 0.25);
+  object-fit: cover;
+  flex: 0 0 auto;
+}
+
 .hero h1 {
   margin: 0;
   font-size: 1.35rem;
@@ -49,6 +65,17 @@ main {
 .hero p {
   margin: 6px 0;
   color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  .hero-brand {
+    gap: 10px;
+  }
+
+  .brand-logo {
+    width: 48px;
+    height: 48px;
+  }
 }
 
 .grid {

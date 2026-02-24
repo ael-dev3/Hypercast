@@ -123,6 +123,8 @@ function renderFeed(container: HTMLElement, rows: CastRow[], state: UIState): vo
 }
 
 function updateStateBadges(elements: ReturnType<typeof getElements>, state: UIState): void {
+  elements.status.classList.toggle('connected', state.connected);
+  elements.status.classList.toggle('disconnected', !state.connected);
   elements.status.textContent = state.connected ? `connected (${state.lastUpdate})` : `disconnected (${state.lastUpdate})`;
   elements.lastSync.textContent = `sync cursor: ${state.lastCursor || 'unknown'}`;
   elements.count.textContent = `total: ${state.totalCasts}`;

@@ -94,3 +94,7 @@ The app blocks non-whitelisted Hypersnap hosts by default and requires explicit
 
 - Poller uses only Hypersnap API (`/v1/events`) and SpacetimeDB.
 - No Snapchain write paths are used.
+
+## QA
+
+- Identity verification commit completed (local Git author: ael-dev3).

@@ -4,10 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hypercast</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <link rel="icon" href="/Hypercast.png" type="image/png" />
     <script type="module" src="/bundle.js"></script>
   </head>
   <body>
+    <div class="ambient">
+      <span class="orb orb-1"></span>
+      <span class="orb orb-2"></span>
+      <span class="orb orb-3"></span>
+    </div>
     <main class="shell">
       <header class="topbar">
         <div class="hero-brand">
@@ -15,21 +26,27 @@
             src="/Hypercast.png"
             alt="Hypercast logo"
             class="brand-logo"
-            width="46"
-            height="46"
+            width="48"
+            height="48"
             loading="eager"
           />
           <div>
-            <h1>Hypercast</h1>
-            <p>Direct Hypersnap feed with SpacetimeDB fallback and 30s visibility cadence</p>
+            <p class="eyebrow">Farcaster Live Feed</p>
+            <h1>Hypercast Pulse</h1>
+            <p class="hero-description">
+              High-fidelity cast activity explorer with Hypersnap and SpacetimeDB fallback.
+            </p>
           </div>
         </div>
         <div class="status-chip" id="mode-chip">mode: booting</div>
       </header>
 
-      <section class="source-card">
+      <section class="panel controls">
+        <div class="panel-head">
+          <h2>Transport Controls</h2>
+          <p class="muted">Wire directly into your preferred endpoint, then tune polling and safety in one place.</p>
+        </div>
         <div class="source-card__head">
-          <h2>Transport Settings</h2>
           <div class="field">
             <label for="modeSelect">Data mode</label>
             <select id="modeSelect">
@@ -37,6 +54,7 @@
               <option value="spacetime">SpacetimeDB</option>
             </select>
           </div>
+          <p class="muted micro" id="trustWarning"></p>
         </div>
 
         <div class="source-grid">
@@ -98,12 +116,10 @@
           <button id="refresh" type="button">Refresh now</button>
           <button id="retry-spacetime" type="button">Retry SpacetimeDB</button>
         </div>
-
-        <p class="muted" id="trustWarning"></p>
-        <p class="muted" id="transportMeta"></p>
+        <p class="muted micro" id="transportMeta"></p>
       </section>
 
-      <section class="grid">
+      <section class="panel grid">
         <article class="card">
           <div class="label">Data Source</div>
           <p id="status">initializing...</p>
@@ -127,13 +143,21 @@
         </article>
       </section>
 
-      <section class="card help">
-        <div class="label">Connection Health</div>
-        <p id="health">initializing</p>
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Connection Health</h2>
+          <p class="muted" id="health">initializing</p>
+        </div>
       </section>
 
-      <section id="feed" aria-live="polite">
-        <div class="empty">Loading latest casts...</div>
+      <section class="panel" id="feedPanel" aria-live="polite">
+        <div class="panel-head">
+          <h2>Latest Casts</h2>
+          <p class="muted">Latest Hypersnap/Spacetime events are processed and deduped client-side.</p>
+        </div>
+        <section id="feed" aria-live="polite">
+          <div class="empty">Loading latest casts...</div>
+        </section>
       </section>
     </main>
   </body>
